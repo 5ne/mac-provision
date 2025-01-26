@@ -27,6 +27,25 @@ else
     echo "Git is already installed"
 fi
 
+# Configure Git with email if not already set
+if [ -z "$(git config --global user.email)" ]; then
+    echo "Configuring Git..."
+    read -p "Please enter your Git email address: " git_email
+    git config --global user.email "$git_email"
+
+    echo "Setting up Git aliases..."
+    git config --global alias.co checkout
+    git config --global alias.br branch
+    git config --global alias.ci commit
+    git config --global alias.st status
+    git config --global alias.unstage 'reset HEAD --'
+    git config --global alias.last 'log -1 HEAD'
+    git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    echo "Git aliases configured"
+else
+    echo "Git email is already configured"
+fi
+
 # Install GitHub CLI if not already installed
 if ! command -v gh &> /dev/null; then
     echo "Installing GitHub CLI..."
@@ -35,13 +54,35 @@ else
     echo "GitHub CLI is already installed"
 fi
 
-# Configure Git with email if not already set
-if [ -z "$(git config --global user.email)" ]; then
-    echo "Configuring Git..."
-    read -p "Please enter your Git email address: " git_email
-    git config --global user.email "$git_email"
+echo "Git and GitHub CLI installation and configuration complete!"
+
+# Check if nvm is installed
+if [ ! -d "$HOME/.nvm" ]; then
+    echo "Installing nvm..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh | bash
+    
+    # Add nvm to shell config if not already present
+    if ! grep -q "export NVM_DIR=\"\$HOME/.nvm\"" "$HOME/.zprofile"; then
+        echo 'export NVM_DIR="$HOME/.nvm"' >> "$HOME/.zprofile"
+        echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> "$HOME/.zprofile"
+    fi
+    
+    # Source nvm
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    
+    echo "nvm installed successfully"
 else
-    echo "Git email is already configured"
+    echo "nvm is already installed"
 fi
 
-echo "Git and GitHub CLI installation and configuration complete!"
+# Install latest Node.js version if not already installed
+if ! command -v node &> /dev/null; then
+    echo "Installing latest Node.js version..."
+    nvm install node # Installs latest version
+    nvm use node # Uses latest version
+    echo "Node.js installed successfully"
+else
+    echo "Node.js is already installed"
+fi
+
