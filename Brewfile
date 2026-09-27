@@ -1,8 +1,6 @@
 # Run: brew bundle
 # Re-run any time — brew bundle is idempotent (skips what's already installed).
 
-tap "homebrew/bundle"
-
 # --- CLI tools ---
 brew "git"
 brew "gh"
