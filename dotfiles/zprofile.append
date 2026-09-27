@@ -1,0 +1,6 @@
+# Appended by mac-provision. Edit freely — this file is only read once, at provision time.
+
+export PATH="/opt/homebrew/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

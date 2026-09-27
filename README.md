@@ -1,19 +1,29 @@
-# Git Setup Script
+# mac-provision
 
-This script automates the process of setting up Git on macOS systems. It performs the following tasks:
-
-1. Checks if Homebrew path is in .zprofile and adds it if missing
-2. Installs Homebrew if not already installed
-3. Adds Homebrew to PATH if not already present 
-4. Installs Git via Homebrew if not already installed
-5. Configures Git with user's email address if not already set
+Provisions a fresh Mac for my typical stack. Every step is idempotent — safe
+to re-run any time (e.g. after adding a line to the Brewfile).
 
 ## Usage
-
-To run the script:
 
 ```bash
 ./provision.sh
 ```
 
-The script will prompt you for your Git email address and configure Git accordingly.
+This will, in order:
+
+1. Prompt for Xcode Command Line Tools if missing (re-run the script once that finishes)
+2. Install Homebrew, and append `dotfiles/zprofile.append` to `~/.zprofile`
+3. Run `brew bundle` against the [`Brewfile`](Brewfile) — CLI tools and casks
+4. Run [`setup-git.sh`](setup-git.sh) — sets your git email and links [`dotfiles/gitconfig`](dotfiles/gitconfig) aliases
+5. Run [`macos.sh`](macos.sh) — sane macOS defaults (trackpad, Finder, Dock, screenshots)
+6. Run [`install-node.sh`](install-node.sh) — optional, prompts before installing nvm + latest Node
+
+## Customizing
+
+- **Want a new CLI tool or app?** Add a `brew "..."` or `cask "..."` line to
+  [`Brewfile`](Brewfile) and re-run `brew bundle --file=Brewfile` (or just re-run `./provision.sh`).
+- **Want a new git alias or other git config?** Edit [`dotfiles/gitconfig`](dotfiles/gitconfig) directly —
+  git reads it live via `include.path`, no script re-run needed.
+- **Want different macOS defaults?** Edit [`macos.sh`](macos.sh) and re-run it (`./macos.sh`).
+- **Want more dotfiles managed here** (`.zshrc`, editor config, etc.)? Drop them in
+  `dotfiles/` and add a symlink step to `provision.sh`.

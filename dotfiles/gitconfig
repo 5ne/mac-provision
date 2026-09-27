@@ -1,0 +1,10 @@
+; Included into ~/.gitconfig by setup-git.sh (git config --global include.path).
+; Edit aliases here — no need to re-run any script, git reads this file live.
+[alias]
+	co = checkout
+	br = branch
+	cm = commit
+	st = status
+	unstage = reset HEAD --
+	last = log -1 HEAD
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
