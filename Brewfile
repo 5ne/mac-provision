@@ -9,6 +9,7 @@ brew "gh"
 
 # --- Casks (GUI apps) ---
 # Uncomment / add what you actually want on this machine.
+cask "google-drive"     # Google Drive sync
 # cask "rectangle"        # window snapping
 # cask "raycast"          # spotlight replacement
 # cask "iterm2"
